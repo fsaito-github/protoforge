@@ -156,6 +156,18 @@ protoforge/
 
 ## 3. Componentes Detalhados
 
+### 3.0 Agentes pós-refinamento (implementação)
+
+Após o **refinamento** (spec.md + plan.md + tasks.md estabilizados), o ProtoForge deve acionar agentes focados em **construir a solução arquitetada** de forma iterativa:
+
+- **Frontend Implementer Agent**: materializa UI/layout do Design Spec, cria componentes, estados e rotas.
+- **Backend/API Implementer Agent** (quando aplicável): implementa endpoints, integrações e persistência.
+- **Integration Agent**: cola front↔back, configura env, contratos e dados fake/mocks.
+- **QA/Test Agent**: adiciona testes (unit/e2e), smoke checks, e valida acceptance criteria.
+- **Security/Compliance Agent**: valida “no secrets”, dependências e hardening básico.
+
+Esses agentes operam sobre os artefatos Spec Kit compatíveis (`constitution.md`, `spec.md`, `plan.md`, `tasks.md`) e produzem PRs/commits incrementais com rastreabilidade.
+
 ### 3.1 Figma MCP Client (`src/figma/`)
 
 **Abordagem**: Consome o Figma MCP Server oficial já configurado no VS Code. Não reimplementamos a API do Figma.
@@ -513,3 +525,4 @@ scaffold-project ──┬── templates ──────┬── codegen-a
 - 2026-02-25 — Testes mínimos adicionados com `node --test` (smoke test do normalizer).
 - 2026-02-25 — README do `protoforge/` atualizado com o fluxo e comandos atuais.
 - 2026-02-25 — Spec Kit clonado em `context/spec-kit` (referência de templates/metodologia).
+- 2026-02-25 — `npm run forge` ajustado para ser um fluxo contínuo: (opcional) `--figma-json` + interview (padrão) + architect + generate + review + deploy; com `--skip-interview` para reuso.

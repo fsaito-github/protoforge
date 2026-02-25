@@ -13,6 +13,7 @@
     "generate": "node --experimental-strip-types src/cli/index.ts generate",
     "review": "node --experimental-strip-types src/cli/index.ts review",
     "deploy": "node --experimental-strip-types src/cli/index.ts deploy",
-    "forge": "node --experimental-strip-types src/cli/index.ts forge"
+    "forge": "node --experimental-strip-types src/cli/index.ts forge",
+    "forge:skip": "node --experimental-strip-types src/cli/index.ts forge --skip-interview"
   }
 }

@@ -11,8 +11,10 @@ git clone https://github.com/github/spec-kit .\context\spec-kit
 
 cd protoforge
 npm run init
-npm run interview   # interactive
-npm run forge       # architect -> generate -> review -> deploy (instructions)
+npm run forge       # continuous pipeline (defaults to interactive interview)
+
+# re-run without interview prompts (reuses existing spec/constitution)
+npm run forge:skip
 ```
 
 ## Commands

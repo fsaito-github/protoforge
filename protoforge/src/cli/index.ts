@@ -9,7 +9,7 @@ import {
 const FEATURE_ID = "001-poc-feature";
 
 function usage() {
-  console.log(`ProtoForge (incremental)\n\nCommands:\n  init       Create local folders\n  capture    Normalize a Figma JSON payload -> design-spec.json (stub)\n  interview  Run PO interview -> constitution+spec\n  architect  Generate plan/research/data-model\n  generate   Generate tasks.md + PoC output\n  review     Generate review.md\n  deploy     Generate deploy.md (Azure prereqs)\n  forge      Run architect->generate->review->deploy (requires spec.md)\n`);
+  console.log(`ProtoForge (incremental)\n\nCommands:\n  init       Create local folders\n  capture    Normalize a Figma JSON payload -> design-spec.json (stub)\n  interview  Run PO interview -> constitution+spec\n  architect  Generate plan/research/data-model\n  generate   Generate tasks.md + PoC output\n  review     Generate review.md\n  deploy     Generate deploy.md (Azure prereqs)\n  forge      Continuous pipeline (optional capture + interview + architect + generate + review + deploy)\n\nForge flags:\n  --figma-json <path>     Writes specs/001-poc-feature/design-spec.json\n  --skip-interview        Reuse existing spec.md/constitution.md\n`);
 }
 
 async function ensureDir(p: string) {
@@ -125,6 +125,30 @@ async function cmdDeploy() {
 
 async function cmdForge() {
   await cmdInit();
+
+  const argv = process.argv.filter((a) => a !== "--");
+  const skipInterview = argv.includes("--skip-interview");
+  const figmaIdx = argv.indexOf("--figma-json");
+  const figmaJsonPath = figmaIdx >= 0 ? argv[figmaIdx + 1] : undefined;
+
+  if (figmaJsonPath) {
+    const raw = await readFile(figmaJsonPath, "utf8");
+    const json = JSON.parse(raw) as unknown;
+    const { normalizeFigmaToDesignSpec } = await import("../figma/normalizer.ts");
+    const spec = normalizeFigmaToDesignSpec(json);
+    const outPath = join("specs", FEATURE_ID, "design-spec.json");
+    await writeFile(outPath, JSON.stringify(spec, null, 2), "utf8");
+    console.log("Wrote " + outPath);
+  }
+
+  if (!skipInterview) {
+    await cmdInterview();
+  } else {
+    // Ensure required inputs exist.
+    await readFile(join("base", "memory", "constitution.md"), "utf8");
+    await readFile(join("specs", FEATURE_ID, "spec.md"), "utf8");
+  }
+
   const { forge } = await import("../agents/orchestrator.ts");
   const out = await forge(FEATURE_ID);
   console.log("Forge complete: " + out.specDir + " + " + out.pocDir);
