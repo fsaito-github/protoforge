@@ -1,0 +1,17 @@
+{
+  "servers": {
+    "figma": {
+      "url": "https://mcp.figma.com/mcp",
+      "type": "sse"
+    },
+    "protoforge": {
+      "command": "node",
+      "args": ["--experimental-strip-types", "src/mcp/server.ts"],
+      "cwd": "${workspaceFolder}\\protoforge",
+      "env": {
+        "AZURE_OPENAI_ENDPOINT": "${env:AZURE_OPENAI_ENDPOINT}",
+        "AZURE_OPENAI_KEY": "${env:AZURE_OPENAI_KEY}"
+      }
+    }
+  }
+}

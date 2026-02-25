@@ -1,0 +1,18 @@
+{
+  "name": "protoforge",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-strip-types src/cli/index.ts",
+    "test": "node --test --experimental-strip-types",
+    "init": "node --experimental-strip-types src/cli/index.ts init",
+    "capture": "node --experimental-strip-types src/cli/index.ts capture",
+    "interview": "node --experimental-strip-types src/cli/index.ts interview",
+    "architect": "node --experimental-strip-types src/cli/index.ts architect",
+    "generate": "node --experimental-strip-types src/cli/index.ts generate",
+    "review": "node --experimental-strip-types src/cli/index.ts review",
+    "deploy": "node --experimental-strip-types src/cli/index.ts deploy",
+    "forge": "node --experimental-strip-types src/cli/index.ts forge"
+  }
+}

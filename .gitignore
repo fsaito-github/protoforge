@@ -1,0 +1,10 @@
+# Ignore local context clones (contest refs, spec-kit reference, etc.)
+context/
+
+# OS / tooling
+Thumbs.db
+.DS_Store
+
+# Local env
+.env
+*.local

@@ -1,0 +1,11 @@
+[project]
+name = "protoforge"
+version = "0.0.0"
+description = "ProtoForge - Figma+PO to Azure PoC"
+requires-python = ">=3.11"
+
+[tool.black]
+line-length = 100
+
+[tool.ruff]
+line-length = 100
