@@ -1,4 +1,4 @@
-# Constitution — ApprovalFlow Lite (aprovação de solicitações internas)
+# Constitution — ApprovalFlow Lite
 
 ## Principles
 - Ship a working PoC fast.

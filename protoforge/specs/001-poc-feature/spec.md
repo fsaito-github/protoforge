@@ -4,10 +4,10 @@
 Quero validar um app interno para aprovar solicitações de compra.
 
 ## Target users
-solicitante e gestor
+solicitante e gestor.
 
 ## User stories
-- As a user, I can access the main screen for ApprovalFlow Lite (aprovação de solicitações internas)
+- As a user, I can access the main screen for ApprovalFlow Lite
 - preciso de dashboard
 - formulário de nova solicitação
 - fila de aprovação com aprovar/rejeitar.

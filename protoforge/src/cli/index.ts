@@ -5,11 +5,12 @@ import {
   generateSpecMarkdown,
   runPoInterview,
 } from "../agents/po/agent.ts";
+import { parseFigmaUrl } from "../shared/figma-url.ts";
 
 const FEATURE_ID = "001-poc-feature";
 
 function usage() {
-  console.log(`ProtoForge (incremental)\n\nCommands:\n  init       Create local folders\n  capture    Normalize a Figma JSON payload -> design-spec.json (stub)\n  interview  Run PO interview -> constitution+spec\n  architect  Generate plan/research/data-model\n  generate   Generate tasks.md + PoC output\n  review     Generate review.md\n  deploy     Generate deploy.md (Azure prereqs)\n  forge      Continuous pipeline (optional capture + interview + architect + generate + review + deploy)\n\nForge flags:\n  --figma-json <path>     Writes specs/001-poc-feature/design-spec.json\n  --skip-interview        Reuse existing spec.md/constitution.md\n`);
+  console.log(`ProtoForge (incremental)\n\nCommands:\n  init       Create local folders\n  capture    Normalize a Figma JSON payload -> design-spec.json (stub)\n  interview  Run PO interview -> constitution+spec\n  architect  Generate plan/research/data-model\n  generate   Generate tasks.md + PoC output\n  review     Generate review.md\n  deploy     Generate deploy.md (Azure prereqs)\n  forge      Continuous pipeline (optional capture + interview + architect + generate + review + deploy)\n\nForge flags:\n  --figma-url <url>       Writes specs/001-poc-feature/figma-source.json (+ a minimal design-spec.json)\n  --figma-json <path>     Writes specs/001-poc-feature/design-spec.json\n  --skip-interview        Reuse existing spec.md/constitution.md\n\nForge env:\n  FIGMA_URL               Same as --figma-url (useful when npm arg forwarding is flaky)\n`);
 }
 
 async function ensureDir(p: string) {
@@ -128,8 +129,41 @@ async function cmdForge() {
 
   const argv = process.argv.filter((a) => a !== "--");
   const skipInterview = argv.includes("--skip-interview");
+
+  const figmaUrlIdx = argv.indexOf("--figma-url");
+  const figmaUrl = (figmaUrlIdx >= 0 ? argv[figmaUrlIdx + 1] : undefined) ?? process.env.FIGMA_URL;
+
   const figmaIdx = argv.indexOf("--figma-json");
   const figmaJsonPath = figmaIdx >= 0 ? argv[figmaIdx + 1] : undefined;
+
+  if (figmaUrl) {
+    const src = parseFigmaUrl(figmaUrl);
+    const outPath = join("specs", FEATURE_ID, "figma-source.json");
+    await writeFile(outPath, JSON.stringify({ ...src, extractedAt: new Date().toISOString() }, null, 2), "utf8");
+    console.log("Wrote " + outPath);
+
+    // Minimal Design Spec placeholder until MCP transport is wired.
+    if (!figmaJsonPath) {
+      const minimal = {
+        projectName: `Figma:${src.fileKey}`,
+        pages: [
+          {
+            name: "(from figma)",
+            frames: [
+              {
+                id: src.nodeId ?? "(node-id not provided)",
+                name: "(node)",
+                children: [],
+              },
+            ],
+          },
+        ],
+      };
+      const designOut = join("specs", FEATURE_ID, "design-spec.json");
+      await writeFile(designOut, JSON.stringify(minimal, null, 2), "utf8");
+      console.log("Wrote " + designOut);
+    }
+  }
 
   if (figmaJsonPath) {
     const raw = await readFile(figmaJsonPath, "utf8");

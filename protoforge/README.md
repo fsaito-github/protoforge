@@ -11,6 +11,10 @@ git clone https://github.com/github/spec-kit .\context\spec-kit
 
 cd protoforge
 npm run init
+
+# pass a Figma URL (recommended on Windows: use env var)
+$env:FIGMA_URL = "https://www.figma.com/file/<fileKey>/<name>?node-id=123%3A456"
+
 npm run forge       # continuous pipeline (defaults to interactive interview)
 
 # re-run without interview prompts (reuses existing spec/constitution)

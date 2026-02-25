@@ -525,4 +525,4 @@ scaffold-project ──┬── templates ──────┬── codegen-a
 - 2026-02-25 — Testes mínimos adicionados com `node --test` (smoke test do normalizer).
 - 2026-02-25 — README do `protoforge/` atualizado com o fluxo e comandos atuais.
 - 2026-02-25 — Spec Kit clonado em `context/spec-kit` (referência de templates/metodologia).
-- 2026-02-25 — `npm run forge` ajustado para ser um fluxo contínuo: (opcional) `--figma-json` + interview (padrão) + architect + generate + review + deploy; com `--skip-interview` para reuso.
+- 2026-02-25 — `npm run forge` ajustado para ser um fluxo contínuo: aceita `--figma-url` (ou `FIGMA_URL`) e/ou `--figma-json`, além de interview (padrão) + architect + generate + review + deploy; com `--skip-interview` para reuso.
